@@ -1,0 +1,42 @@
+#!/bin/bash
+
+while true
+do
+    COMMAND=`ps -Aco pid,pcpu,time,comm | sort -nrk2 | head -1`
+    PID=`echo $COMMAND | awk '{print $1}'`
+    PCPU=`echo $COMMAND | awk '{print $2}'`
+    PCPU=${PCPU%%.*}
+    PTIME=`echo $COMMAND | awk '{print $3}'`
+    PTIME=${PTIME%%:*}
+    PCMD=`echo $COMMAND | awk '{print $4}'`
+    
+    MAXUSE=80
+	MAXHOURS=1
+	
+	if [ $PCPU -ge $MAXUSE ] && [ $PTIME -ge $MAXHOURS ];
+	then
+	    sleep 20
+	
+        NEWCOMMAND=`ps -Aco pid,pcpu,time,comm | sort -nrk2 | head -10 | grep $PID`
+		NEWPCPU=`echo $NEWCOMMAND | awk '{print $2}'`
+		NEWPCPU=${NEWPCPU%%.*}
+		NEWTIME=`echo $NEWCOMMAND | awk '{print $3}'`
+		NEWTIME=${NEWTIME%%:*}
+
+		if [ $NEWPCPU -ge $MAXUSE ] && [ $NEWTIME -ge $MAXHOURS ];
+		then
+		    kill -15 $PID
+		    sleep 20
+		    
+		    if [ `ps -Aco pid,pcpu | sort -nrk2 | head -10 | grep -c $PID` == 1 ];
+            then                
+                kill -9 $PID
+                echo `date`" - SIGKILLed $PCMD with PID $PID at $NEWPCPU CPU usage and $NEWTIME CPU time... na holleri!" >> killerlog.txt
+            else
+    		    echo `date`" - SIGTERMinated $PCMD with PID $PID at $NEWPCPU CPU usage and $NEWTIME CPU time" >> killerlog.txt
+            fi
+		fi
+	fi
+	
+	sleep 60
+done
