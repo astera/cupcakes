@@ -41,7 +41,7 @@ count=0
 our_ipvsadm='sudo /sbin/ipvsadm'
 
 for i in `$our_ipvsadm -L -t $IPserv -n | grep -v 'LocalAddress:Port' | grep -v 'RemoteAddress:Port' | grep -v ^TCP | awk '{print $5}'`; do
-    count=$(($count+$i)) 
+    count=$(($count+$i))
     exit_status=0
 done
 
