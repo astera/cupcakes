@@ -1,0 +1,4 @@
+# A nice-to-have alias in order to quickly reattach to a screen running inside
+# a virtual machine on an OpenVZ or Virtuozzo host
+
+alias devenv='ssh $VZ_SERVER -p $HOST_PORT -l $USER -i $YOUR_KEYFILE -t sudo vzctl enter $YOUR_VMs_VEID --exec screen -r'
