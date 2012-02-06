@@ -50,7 +50,7 @@ for disk in `mount | grep ^/dev/ | awk '{print $1}'`; do
   tps=`$our_iostat $disk | grep -A1 Device | grep -v Device | awk '{print $2}'`
   kbread=`$our_iostat $disk | grep -A1 Device | grep -v Device | awk '{print $3}'`
   kbwritten=`$our_iostat $disk | grep -A1 Device | grep -v Device | awk '{print $4}'`
-  
+
   if [ `echo "$tps >= $tps_crit" | $our_bc` == 1 ] || [ `echo "$kbread >= $kbread_crit" | $our_bc` == 1 ] || [ `echo "$kbwritten >= $kbwritten_crit" | $our_bc` == 1 ]; then
     echo 'CRITICAL'
     exit_status=2
@@ -69,7 +69,7 @@ for disk in `mount | grep ^/dev/ | awk '{print $1}'`; do
     echo 'LOLWHUT?'
     exit_status=3
   fi
-  
+
   echo -n 'IO stats on disk' $disk '| TPS='$tps';'$tps_warn';'$tps_crit 'KBREAD='$kbread';'$kbread_warn';'$kbread_crit 'KBWRITTEN='$kbwritten';'$kbwritten_warn';'$kbwritten_crit' '
 done
 
