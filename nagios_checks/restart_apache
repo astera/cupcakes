@@ -19,7 +19,7 @@ if [ -e /etc/init.d/apache2 ]; then
 else
   my_apache='httpd'
 fi
-    
+
 echo -n "Restarting Apache, plz hold..."
 sudo /etc/init.d/$my_apache restart
 

@@ -37,7 +37,7 @@ if [ $# -gt 1 ]; then
 fi
 
 for int in `/sbin/ifconfig -a | grep ^eth | grep -v ^eth[0-9]:[0-9] | awk '{print $1}'`; do
-    
+
     if [ `grep $int /etc/network/interfaces | grep -v ^# | wc -l` -ge 1 ]; then
     duplex=`sudo $our_ethtool $int | grep Duplex | awk '{print $2}'`
 
@@ -51,8 +51,8 @@ for int in `/sbin/ifconfig -a | grep ^eth | grep -v ^eth[0-9]:[0-9] | awk '{prin
             echo -n 'Error while running link mode check! '
             exit_status=3
         fi
-        
-        if [ $ls_int == 0 ]; then        
+
+        if [ $ls_int == 0 ]; then
       speed=`sudo $our_ethtool $int | grep Speed | awk '{print $2}' | awk -F M '{print $1}'`
 
             if [ $speed == 100 ] || [ $speed == 1000 ]; then
@@ -68,7 +68,7 @@ for int in `/sbin/ifconfig -a | grep ^eth | grep -v ^eth[0-9]:[0-9] | awk '{prin
             echo -n 'Speed not checked. '
         fi
     fi
-    
+
 done
 
 exit $exit_status
