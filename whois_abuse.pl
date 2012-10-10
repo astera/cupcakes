@@ -2,7 +2,7 @@
 use strict;
 
 my $scriptname = $0;
-@ARGV || die("Usage: $scriptname <IP>\n");
+@ARGV || die("Usage: $scriptname <one or more IPs>\n");
 
 while (@ARGV) {
 	&whois(shift);
